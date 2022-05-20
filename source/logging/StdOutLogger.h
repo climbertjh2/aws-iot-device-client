@@ -29,6 +29,10 @@ namespace Aws
                      * so that the application can safely shutdown
                      */
                     bool needsShutdown = false;
+
+                    std::mutex needsShutdownLock;
+
+                    std::condition_variable needsShutdownNotifier;
                     /**
                      * \brief The default value in milliseconds for which Device client will wait after getting a
                      * log message from logQueue

@@ -37,7 +37,7 @@ void StdOutLogger::run()
     }
 
     stop();
-    needsShutdownNotifier.notify_one();
+    shutdownNotifier.notify_one();
 }
 
 bool StdOutLogger::start(const PlainConfig &config)
@@ -74,7 +74,7 @@ void StdOutLogger::shutdown()
 {
     unique_lock<mutex> shutdownLock(needsShutdownLock);
     needsShutdown = true;
-    needsShutdownNotifier.wait(shutdownLock);
+    shutdownNotifier.wait(shutdownLock);
 }
 
 void StdOutLogger::flush()

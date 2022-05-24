@@ -198,7 +198,8 @@ void handle_feature_stopped(const Feature *feature)
 void attemptConnection()
 {
     Retry::ExponentialRetryConfig retryConfig = {10 * 1000, 900 * 1000, -1, nullptr};
-    auto publishLambda = []() -> bool {
+    auto publishLambda = []() -> bool
+    {
         int connectionStatus = resourceManager.get()->establishConnection(config.config);
         if (SharedCrtResourceManager::ABORT == connectionStatus)
         {
@@ -221,8 +222,8 @@ void attemptConnection()
             return false;
         }
     };
-    std::thread attemptConnectionThread(
-        [retryConfig, publishLambda] { Retry::exponentialBackoff(retryConfig, publishLambda); });
+    std::thread attemptConnectionThread([retryConfig, publishLambda]
+                                        { Retry::exponentialBackoff(retryConfig, publishLambda); });
     attemptConnectionThread.join();
 }
 
@@ -345,6 +346,7 @@ int main(int argc, char *argv[])
     memset(&sigset, 0, sizeof(sigset_t));
     int received_signal;
     sigaddset(&sigset, SIGINT);
+    sigaddset(&sigset, SIGTERM);
     sigaddset(&sigset, SIGHUP);
     sigprocmask(SIG_BLOCK, &sigset, 0);
 
@@ -548,6 +550,9 @@ int main(int argc, char *argv[])
         switch (received_signal)
         {
             case SIGINT:
+                shutdown();
+                break;
+            case SIGTERM:
                 shutdown();
                 break;
             case SIGHUP:

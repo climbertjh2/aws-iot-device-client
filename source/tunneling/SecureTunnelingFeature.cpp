@@ -119,7 +119,7 @@ namespace Aws
                         SubscribeToTunnelsNotifyRequest request;
                         request.ThingName = mThingName.c_str();
 
-                        iotSecureTunnelingClient = getClient();
+                        iotSecureTunnelingClient = createClient();
 
                         iotSecureTunnelingClient->SubscribeToTunnelsNotify(
                             request,
@@ -195,7 +195,7 @@ namespace Aws
                         LOG_ERROR(TAG, "region cannot be empty");
                         return;
                     }
-                    string region = response->Region.value().c_str();
+                    string region = response->Region->c_str();
 
                     string service = response->Services->at(0).c_str();
                     uint16_t port = GetPortFromService(service);
@@ -262,7 +262,7 @@ namespace Aws
                         bind(&SecureTunnelingFeature::OnConnectionShutdown, this, placeholders::_1)));
                 }
 
-                std::shared_ptr<AbstractIotSecureTunnelingClient> SecureTunnelingFeature::getClient()
+                std::shared_ptr<AbstractIotSecureTunnelingClient> SecureTunnelingFeature::createClient()
                 {
                     return std::shared_ptr<AbstractIotSecureTunnelingClient>(
                         new IotSecureTunnelingClientWrapper(mSharedCrtResourceManager->getConnection()));

@@ -904,3 +904,17 @@
    fun:s_run_all
    fun:aws_task_scheduler_run_all
 }
+{
+   possible_8
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:allocate_dtv
+   fun:_dl_allocate_tls
+   fun:allocate_stack
+   fun:pthread_create@@GLIBC_2.2.5
+   fun:_ZNSt6thread15_M_start_threadESt10unique_ptrINS_6_StateESt14default_deleteIS1_EEPFvvE
+   fun:_ZNSt6threadC1IZ17attemptConnectionvEUlvE0_JEvEEOT_DpOT0_
+   fun:_Z17attemptConnectionv
+   fun:main
+}

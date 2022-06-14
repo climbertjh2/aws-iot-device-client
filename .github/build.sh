@@ -94,7 +94,7 @@ else
 fi
 ### Compile ###
 cd ..
-ln -s /home/sdk-cpp-workspace ./sdk-cpp-workspace
+ln -s /home/aws-iot-device-client/sdk-cpp-workspace ./sdk-cpp-workspace
 if [ ! -d "./build" ]; then
   mkdir ./build
 fi
